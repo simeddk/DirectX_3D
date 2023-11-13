@@ -1,12 +1,15 @@
 #include "stdafx.h"
-#include "VertexLineDemo.h"
+#include "VertexLineColorDemo.h"
 
-void VertexLineDemo::Initialize()
+void VertexLineColorDemo::Initialize()
 {
-	shader = new Shader(L"01_Line.fxo");
+	shader = new Shader(L"02_Pass.fxo");
 
 	vertices[0].Position = Vector3(0, 0, 0);
+	vertices[0].Color = Color(1, 0, 0, 1);
+
 	vertices[1].Position = Vector3(1, 0, 0);
+	vertices[1].Color = Color(0, 1, 0, 1);
 
 	D3D11_BUFFER_DESC desc;
 	ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
@@ -19,22 +22,27 @@ void VertexLineDemo::Initialize()
 	Check(D3D::GetDevice()->CreateBuffer(&desc, &subResource, &vertexBuffer));
 }
 
-void VertexLineDemo::Destroy()
+void VertexLineColorDemo::Destroy()
 {
 	SafeRelease(vertexBuffer);
 	SafeDelete(shader);
 }
 
-void VertexLineDemo::Update()
+void VertexLineColorDemo::Update()
 {
 }
 
-void VertexLineDemo::Render()
+void VertexLineColorDemo::Render()
 {
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
 	D3D::GetDC()->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 	D3D::GetDC()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
 
-	shader->Draw(0, 0, 2);
+	static int pass = 0;
+	ImGui::InputInt("Pass", &pass);
+
+	pass %= 4;
+
+	shader->Draw(0, pass, 2);
 }
