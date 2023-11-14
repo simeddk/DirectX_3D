@@ -3,13 +3,56 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="VertexLineDemo.cpp" />
-    <ClCompile Include="VertexLineColorDemo.cpp" />
+    <ClCompile Include="VertexLineColorDemo.cpp">
+      <Filter>Line</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexLineDemo.cpp">
+      <Filter>Line</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexTopologyDemo.cpp">
+      <Filter>Line</Filter>
+    </ClCompile>
+    <ClCompile Include="PolygonDemo.cpp">
+      <Filter>Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaneDemo.cpp">
+      <Filter>Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldDemo.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="VertexLineDemo.h" />
-    <ClInclude Include="VertexLineColorDemo.h" />
+    <ClInclude Include="VertexLineColorDemo.h">
+      <Filter>Line</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexLineDemo.h">
+      <Filter>Line</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexTopologyDemo.h">
+      <Filter>Line</Filter>
+    </ClInclude>
+    <ClInclude Include="PolygonDemo.h">
+      <Filter>Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaneDemo.h">
+      <Filter>Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldDemo.h">
+      <Filter>World</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Line">
+      <UniqueIdentifier>{9294a56e-36d4-4a33-b154-f65a5609d7de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh">
+      <UniqueIdentifier>{bde60a37-c865-40c7-a4f4-71bd59e32389}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World">
+      <UniqueIdentifier>{475c5738-ff29-42c7-ac3c-82e194b7d8ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

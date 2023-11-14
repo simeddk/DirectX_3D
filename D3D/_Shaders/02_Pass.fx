@@ -40,6 +40,12 @@ float4 PS_VertexColor(VertexOutput input) : SV_Target
 	return input.Color;
 }
 
+float4 BaseColor;
+float4 PS_VectorParam(VertexOutput input) : SV_Target
+{
+	return BaseColor;
+}
+
 technique11 T0
 {
 	pass P0
@@ -64,5 +70,11 @@ technique11 T0
 	{
 		SetVertexShader(CompileShader(vs_5_0, VS()));
 		SetPixelShader(CompileShader(ps_5_0, PS_VertexColor()));
+	}
+
+	pass P4
+	{
+		SetVertexShader(CompileShader(vs_5_0, VS()));
+		SetPixelShader(CompileShader(ps_5_0, PS_VectorParam()));
 	}
 }

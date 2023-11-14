@@ -4,10 +4,14 @@
 
 #include "VertexLineDemo.h"
 #include "VertexLineColorDemo.h"
+#include "VertexTopologyDemo.h"
+#include "PolygonDemo.h"
+#include "PlaneDemo.h"
+#include "WorldDemo.h"
 
 void Main::Initialize()
 {
-	Push(new VertexLineColorDemo());
+	Push(new WorldDemo());
 }
 
 
