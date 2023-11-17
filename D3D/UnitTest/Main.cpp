@@ -10,10 +10,12 @@
 #include "WorldDemo.h"
 #include "IndexBufferDemo.h"
 #include "GridDemo.h"
+#include "TextureDemo.h"
+#include "SamplerStateDemo.h"
 
 void Main::Initialize()
 {
-	Push(new GridDemo());
+	Push(new SamplerStateDemo());
 }
 
 

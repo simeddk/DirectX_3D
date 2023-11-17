@@ -24,9 +24,11 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PlaneDemo.cpp" />
     <ClCompile Include="PolygonDemo.cpp" />
+    <ClCompile Include="SamplerStateDemo.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TextureDemo.cpp" />
     <ClCompile Include="VertexLineColorDemo.cpp" />
     <ClCompile Include="VertexLineDemo.cpp" />
     <ClCompile Include="VertexTopologyDemo.cpp" />
@@ -38,7 +40,9 @@
     <ClInclude Include="Main.h" />
     <ClInclude Include="PlaneDemo.h" />
     <ClInclude Include="PolygonDemo.h" />
+    <ClInclude Include="SamplerStateDemo.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TextureDemo.h" />
     <ClInclude Include="VertexLineColorDemo.h" />
     <ClInclude Include="VertexLineDemo.h" />
     <ClInclude Include="VertexTopologyDemo.h" />

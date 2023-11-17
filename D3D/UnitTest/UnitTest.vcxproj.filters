@@ -27,6 +27,12 @@
     <ClCompile Include="GridDemo.cpp">
       <Filter>Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="TextureDemo.cpp">
+      <Filter>Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="SamplerStateDemo.cpp">
+      <Filter>Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
@@ -53,6 +59,12 @@
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="GridDemo.h">
+      <Filter>Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureDemo.h">
+      <Filter>Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="SamplerStateDemo.h">
       <Filter>Mesh</Filter>
     </ClInclude>
   </ItemGroup>
