@@ -28,6 +28,7 @@
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TerrainDemo.cpp" />
     <ClCompile Include="TextureDemo.cpp" />
     <ClCompile Include="VertexLineColorDemo.cpp" />
     <ClCompile Include="VertexLineDemo.cpp" />
@@ -42,6 +43,7 @@
     <ClInclude Include="PolygonDemo.h" />
     <ClInclude Include="SamplerStateDemo.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TerrainDemo.h" />
     <ClInclude Include="TextureDemo.h" />
     <ClInclude Include="VertexLineColorDemo.h" />
     <ClInclude Include="VertexLineDemo.h" />
