@@ -8,6 +8,7 @@ Terrain::Terrain(Shader* shader, wstring heightMapPath)
 
 	CreateVertexData();
 	CreateIndexData();
+	CreateNormalData();
 	CreateBuffer();
 
 	D3DXMatrixIdentity(&world);
@@ -33,6 +34,11 @@ void Terrain::Update()
 
 void Terrain::Render()
 {
+	VisibleNormal();
+
+	if (baseMap != nullptr)
+		shader->AsSRV("BaseMap")->SetResource(baseMap->SRV());
+
 	UINT stride = sizeof(VertexTerrain);
 	UINT offset = 0;
 
@@ -41,6 +47,36 @@ void Terrain::Render()
 	D3D::GetDC()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	shader->DrawIndexed(0, pass, indexCount);
+}
+
+void Terrain::VisibleNormal()
+{
+	static bool bVisibleNormal = false;
+	static int interval = 3;
+	ImGui::Checkbox("Visble Normal", &bVisibleNormal);
+	ImGui::SliderInt("Interval", &interval, 1, 5);
+
+	if (bVisibleNormal)
+	{
+		for (UINT z = 0; z < height; z += interval)
+		{
+			for (UINT x = 0; x < width; x += interval)
+			{
+				UINT index = width * z + x;
+
+				Vector3 start = vertices[index].Position;
+				Vector3 end = start + vertices[index].Normal;
+				DebugLine::Get()->RenderLine(start, end);
+			}
+		}
+	}
+}
+
+void Terrain::BaseMap(wstring path)
+{
+	SafeDelete(baseMap);
+
+	baseMap = new Texture(path);
 }
 
 void Terrain::CreateVertexData()
@@ -64,6 +100,9 @@ void Terrain::CreateVertexData()
 			vertices[index].Position.x = (float)x;
 			vertices[index].Position.y = pixels[reverse].r * 255.f / 10.f;
 			vertices[index].Position.z = (float)y;
+
+			vertices[index].Uv.x = x / (float)width - 1;
+			vertices[index].Uv.y = 1.f - (y / (float)(height - 1));
 		}
 	}
 }
