@@ -36,6 +36,9 @@
     <ClCompile Include="TerrainDemo.cpp">
       <Filter>World</Filter>
     </ClCompile>
+    <ClCompile Include="MeshDemo.cpp">
+      <Filter>Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
@@ -72,6 +75,9 @@
     </ClInclude>
     <ClInclude Include="TerrainDemo.h">
       <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshDemo.h">
+      <Filter>Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
