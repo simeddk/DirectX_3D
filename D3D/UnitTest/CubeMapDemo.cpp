@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "MeshDemo.h"
+#include "CubeMapDemo.h"
 
-void MeshDemo::Initialize()
+void CubeMapDemo::Initialize()
 {
 	Context::Get()->GetCamera()->RotationDegree(20, 0, 0);
 	Context::Get()->GetCamera()->Position(1, 36, -85);
@@ -10,9 +10,15 @@ void MeshDemo::Initialize()
 	shader = new Shader(L"11_Mesh.fxo");
 
 	CreateMesh();
+
+	cubeMapShader = new Shader(L"12_CubeMap.fxo");
+	cubeMap = new CubeMap(cubeMapShader);
+	cubeMap->Texture(L"Environment/SnowCube1024.dds");
+	cubeMap->Position(0, 20, 0);
+	cubeMap->Scale(10, 10, 10);
 }
 
-void MeshDemo::Destroy()
+void CubeMapDemo::Destroy()
 {
 	SafeDelete(shader);
 	SafeDelete(quad);
@@ -25,9 +31,12 @@ void MeshDemo::Destroy()
 	for (int i = 0; i < 10; i++)
 		SafeDelete(spheres[i]);
 
+	SafeDelete(cubeMapShader);
+	SafeDelete(cubeMap);
+
 }
 
-void MeshDemo::Update()
+void CubeMapDemo::Update()
 {
 	static Vector3 lightDirection = Vector3(-1, -1, 1);
 	ImGui::SliderFloat3("Light Direction", lightDirection, -1, 1);
@@ -43,10 +52,10 @@ void MeshDemo::Update()
 		spheres[i]->Update();
 	}
 
-
+	cubeMap->Update();
 }
 
-void MeshDemo::Render()
+void CubeMapDemo::Render()
 {
 	//WireFrame Test
 	{
@@ -73,9 +82,11 @@ void MeshDemo::Render()
 		cylinders[i]->Render();
 		spheres[i]->Render();
 	}
+
+	cubeMap->Render();
 }
 
-void MeshDemo::CreateMesh()
+void CubeMapDemo::CreateMesh()
 {
 	quad = new MeshQuad(shader);
 	quad->DiffuseMap(L"Box.png");

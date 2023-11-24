@@ -73,7 +73,6 @@ void GridDemo::Destroy()
 	SafeRelease(vertexBuffer);
 	SafeRelease(indexBuffer);
 
-	//UnresolvedMergeConflict. delete[]
 	SafeDeleteArray(vertices);
 	SafeDeleteArray(indices);
 }

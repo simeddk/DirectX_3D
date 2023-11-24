@@ -50,6 +50,7 @@ protected:
 		Vector2 Uv;
 		Vector3 Normal;
 
+		//UnresolvedMergeConflict. 정점 구성 순서 변경
 		VertexMesh()
 		{
 			Position = Vector3(0, 0, 0);

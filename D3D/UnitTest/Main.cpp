@@ -14,10 +14,11 @@
 #include "SamplerStateDemo.h"
 #include "TerrainDemo.h"
 #include "MeshDemo.h"
+#include "CubeMapDemo.h"
 
 void Main::Initialize()
 {
-	Push(new MeshDemo());
+	Push(new CubeMapDemo()); //Todo. 큐브맵을 다른 메시로 바꿔보기
 }
 
 

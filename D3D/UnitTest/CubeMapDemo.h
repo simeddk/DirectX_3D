@@ -1,7 +1,7 @@
 #pragma once
 #include "Systems/IExecute.h"
 
-class MeshDemo : public IExecute
+class CubeMapDemo : public IExecute
 {
 public:
 	virtual void Initialize() override;
@@ -24,4 +24,7 @@ private:
 	MeshCube* cube = nullptr;
 	MeshCylinder* cylinders[10];
 	MeshSphere* spheres[10];
+
+	Shader* cubeMapShader = nullptr;
+	CubeMap* cubeMap = nullptr;
 };

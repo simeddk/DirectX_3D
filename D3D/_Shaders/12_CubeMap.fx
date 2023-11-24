@@ -4,20 +4,17 @@ matrix Projection;
 
 float3 LightDirection;
 
-Texture2D DiffuseMap;
+TextureCube CubeMap;
 
 struct VertexInput
 {
 	float4 Position : Position;
-	float2 Uv : Uv;
-	float3 Normal : Normal;
 };
 
 struct VertexOutput
 {
 	float4 Position : SV_Position;
-	float2 Uv : Uv;
-	float3 Normal : Normal;
+	float3 oPosition : Position1;
 };
 
 RasterizerState FillMode_WireFrame
@@ -35,25 +32,22 @@ SamplerState LinearSampler
 VertexOutput VS(VertexInput input)
 {
 	VertexOutput output;
+	
+	output.oPosition = input.Position.xyz;
+	
 	output.Position = mul(input.Position, World);
 	output.Position = mul(output.Position, View);
 	output.Position = mul(output.Position, Projection);
-	
-	output.Normal = mul(input.Normal, (float3x3)World);
-	
-	output.Uv = input.Uv;
 	
 	return output;
 }
 
 float4 PS(VertexOutput input) : SV_Target
 {
-	float3 normal = normalize(input.Normal);
 	
-	float4 baseColor = DiffuseMap.Sample(LinearSampler, input.Uv);
-	float lambert = saturate(dot(normal, -LightDirection));
+	float4 diffuseColor = CubeMap.Sample(LinearSampler, input.oPosition);
 
-	return baseColor * lambert;
+	return diffuseColor;
 }
 
 float4 PS_WireFrame(VertexOutput input) : SV_Target
