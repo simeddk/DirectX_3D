@@ -6,7 +6,7 @@ CubeMap::CubeMap(Shader* shader)
 {
 	sSrv = shader->AsSRV("CubeMap");
 
-	mesh = new MeshCube(shader);
+	mesh = new MeshSphere(shader, 0.5f);
 }
 
 CubeMap::~CubeMap()

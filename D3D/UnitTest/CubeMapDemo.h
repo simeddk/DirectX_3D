@@ -27,4 +27,6 @@ private:
 
 	Shader* cubeMapShader = nullptr;
 	CubeMap* cubeMap = nullptr;
+
+	CubeSky* sky = nullptr;
 };

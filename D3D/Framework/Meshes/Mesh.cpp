@@ -18,8 +18,8 @@ Mesh::~Mesh()
 	SafeDeleteArray(vertices);
 	SafeDeleteArray(indices);
 
-	SafeRelease(vertexBuffer);
-	SafeRelease(indexBuffer);
+	SafeDelete(vertexBuffer);
+	SafeDelete(indexBuffer);
 
 	SafeDelete(diffuseMap);
 }
@@ -33,14 +33,16 @@ void Mesh::Render()
 	if (vertexBuffer == nullptr || indexBuffer == nullptr)
 	{
 		Create();
-		CreateBuffer();
+
+		vertexBuffer = new VertexBuffer(vertices, vertexCount, sizeof(VertexMesh));
+		indexBuffer = new IndexBuffer(indices, indexCount);
 	}
 
 	UINT stride = sizeof(VertexMesh);
 	UINT offset = 0;
 
-	D3D::GetDC()->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
-	D3D::GetDC()->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	vertexBuffer->Render();
+	indexBuffer->Render();
 	D3D::GetDC()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	sWorld->SetMatrix(world);
@@ -143,34 +145,6 @@ void Mesh::DiffuseMap(wstring path)
 	diffuseMap = new Texture(path);
 }
 
-void Mesh::CreateBuffer()
-{
-	//Create Vertex Buffer
-	{
-		D3D11_BUFFER_DESC desc;
-		ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
-		desc.ByteWidth = sizeof(VertexMesh) * vertexCount;
-		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-
-		D3D11_SUBRESOURCE_DATA data = { 0 };
-		data.pSysMem = vertices;
-
-		Check(D3D::GetDevice()->CreateBuffer(&desc, &data, &vertexBuffer));
-	}
-
-	//Create Index Buffer
-	{
-		D3D11_BUFFER_DESC desc;
-		ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
-		desc.ByteWidth = sizeof(UINT) * indexCount;
-		desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-
-		D3D11_SUBRESOURCE_DATA data = { 0 };
-		data.pSysMem = indices;
-
-		Check(D3D::GetDevice()->CreateBuffer(&desc, &data, &indexBuffer));
-	}
-}
 
 void Mesh::UpdateWorld()
 {

@@ -18,7 +18,7 @@
 
 void Main::Initialize()
 {
-	Push(new CubeMapDemo()); //Todo. 큐브맵을 다른 메시로 바꿔보기
+	Push(new TerrainDemo());
 }
 
 
