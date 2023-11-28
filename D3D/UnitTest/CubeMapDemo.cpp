@@ -15,7 +15,7 @@ void CubeMapDemo::Initialize()
 
 	cubeMapShader = new Shader(L"12_CubeMap.fxo");
 	cubeMap = new CubeMap(cubeMapShader);
-	cubeMap->Texture(L"Environment/SnowCube1024.dds");
+	cubeMap->Texture(L"Environment/Mountain1024.dds");
 	cubeMap->Position(0, 20, 0);
 	cubeMap->Scale(10, 10, 10);
 }

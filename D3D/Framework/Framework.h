@@ -78,6 +78,7 @@ typedef D3DXPLANE Plane;
 #include "Renders/Context.h"
 #include "Renders/DebugLine.h"
 #include "Renders/Buffers.h"
+#include "Renders/Transform.h"
 
 #include "Utilities/Math.h"
 #include "Utilities/String.h"

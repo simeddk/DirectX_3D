@@ -3,7 +3,7 @@
 //-----------------------------------------------------------------------------
 cbuffer CB_PerFrame
 {
-    matrix View;
+	matrix View;
     matrix ViewInverse;
     matrix Projection;
     matrix VP;
