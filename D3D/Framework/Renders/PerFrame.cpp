@@ -26,4 +26,6 @@ void PerFrame::Update()
 
 void PerFrame::Render()
 {
+	buffer->Render();
+	sBuffer->SetConstantBuffer(buffer->Buffer());
 }

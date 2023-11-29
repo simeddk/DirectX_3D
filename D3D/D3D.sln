@@ -28,6 +28,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shaders", "_Shaders", "{48
 		_Shaders\13_CubeSky.fx = _Shaders\13_CubeSky.fx
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ModelEditor", "ModelEditor\ModelEditor.vcxproj", "{13908599-3DF0-4DFA-9608-A21DDE571113}"
+	ProjectSection(ProjectDependencies) = postProject
+		{27F66C4E-CB87-4F60-A630-B3D48B6724E0} = {27F66C4E-CB87-4F60-A630-B3D48B6724E0}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -42,6 +47,10 @@ Global
 		{FFF09A1A-08DD-4E46-A2D6-86CB1ABEC6DE}.Debug|x86.Build.0 = Debug|Win32
 		{FFF09A1A-08DD-4E46-A2D6-86CB1ABEC6DE}.Release|x86.ActiveCfg = Release|Win32
 		{FFF09A1A-08DD-4E46-A2D6-86CB1ABEC6DE}.Release|x86.Build.0 = Release|Win32
+		{13908599-3DF0-4DFA-9608-A21DDE571113}.Debug|x86.ActiveCfg = Debug|Win32
+		{13908599-3DF0-4DFA-9608-A21DDE571113}.Debug|x86.Build.0 = Debug|Win32
+		{13908599-3DF0-4DFA-9608-A21DDE571113}.Release|x86.ActiveCfg = Release|Win32
+		{13908599-3DF0-4DFA-9608-A21DDE571113}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -20,6 +20,9 @@ VertexOutput VS(VertexInput input)
 	
 	output.oPosition = input.Position.xyz;
 	
+	input.Position.x += cos(Time * 3.f);
+	input.Position.z += sin(Time * 3.f);
+	
 	output.Position = WorldPosition(input.Position);
 	output.Position = ViewProjection(output.Position);
 	
@@ -28,10 +31,13 @@ VertexOutput VS(VertexInput input)
 
 float4 PS(VertexOutput input) : SV_Target
 {
-	
-	float4 diffuseColor = CubeMap.Sample(LinearSampler, input.oPosition);
+	float4 diffuse = CubeMap.Sample(LinearSampler, input.oPosition);
 
-	return diffuseColor;
+	float4 a = float4(1, 0, 0, 1);
+	float4 b = float4(0, 0, 1, 1);
+	float t = sin(Time * 10.f) * 0.5f + 0.5f; //-1~1 => 0~1
+	
+	return saturate(diffuse + lerp(a, b, t));
 }
 
 float4 PS_WireFrame(VertexOutput input) : SV_Target
