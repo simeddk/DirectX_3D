@@ -3,9 +3,23 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="ExportFile.cpp" />
+    <ClCompile Include="Converter.cpp">
+      <Filter>Converter</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="ExportFile.h" />
+    <ClInclude Include="Converter.h">
+      <Filter>Converter</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Converter">
+      <UniqueIdentifier>{b5b82204-a970-47b4-853e-aaaab70b7d7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

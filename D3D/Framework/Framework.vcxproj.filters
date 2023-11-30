@@ -104,6 +104,9 @@
     <ClCompile Include="Renders\Renderer.cpp">
       <Filter>Renders</Filter>
     </ClCompile>
+    <ClCompile Include="Model\Model.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Renders">
@@ -126,6 +129,9 @@
     </Filter>
     <Filter Include="Objects">
       <UniqueIdentifier>{2db3c3ff-5312-478a-81b2-4bd1dd07093c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{0d5bf85d-d50c-4476-8fe1-e030f5459e5b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -234,6 +240,9 @@
     </ClInclude>
     <ClInclude Include="Renders\Renderer.h">
       <Filter>Renders</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\Model.h">
+      <Filter>Model</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
