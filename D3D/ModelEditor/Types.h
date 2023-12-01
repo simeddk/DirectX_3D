@@ -13,7 +13,12 @@ struct asBone
 
 struct asMeshPart
 {
-	//Todo. 머티리얼을 기준으로 또 나눠지겠군...
+	string MaterialName;
+
+	UINT StartVertex;
+	UINT VertexCount;
+	UINT StartIndex;
+	UINT IndexCount;
 };
 
 struct asMesh
@@ -22,4 +27,6 @@ struct asMesh
 
 	vector<Model::VertexModel> Vertices;
 	vector<UINT> Indices;
+
+	vector<asMeshPart*> MeshParts;
 };
