@@ -15,7 +15,7 @@ PerFrame::~PerFrame()
 
 void PerFrame::Update()
 {
-	desc.Time = Time::Get()->Running(); //UnresolvedMergeConflict
+	desc.Time = Time::Get()->Running();
 
 	desc.View = Context::Get()->View();
 	D3DXMatrixInverse(&desc.ViewInverse, nullptr, &desc.View);

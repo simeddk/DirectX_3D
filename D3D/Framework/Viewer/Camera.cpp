@@ -77,12 +77,6 @@ void Camera::Rotation()
 	D3DXVec3TransformNormal(&right, &Vector3(1, 0, 0), &matRotation);
 	D3DXVec3TransformNormal(&up, &Vector3(0, 1, 0), &matRotation);
 	D3DXVec3TransformNormal(&forward, &Vector3(0, 0, 1), &matRotation);
-
-	//UnresolvedMergeConflict. Matrix Member Used
-	/*right = Vector3(matRotation._11, matRotation._12, matRotation._13);
-	up = Vector3(matRotation._21, matRotation._22, matRotation._23);
-	forward = Vector3(matRotation._31, matRotation._32, matRotation._33);*/
-	
 }
 
 void Camera::Move()
