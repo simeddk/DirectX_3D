@@ -3,11 +3,13 @@
 #include "Systems/Window.h"
 
 #include "ExportFile.h"
+#include "ModelDemo.h"
 
 
 void Main::Initialize()
 {
 	Push(new ExportFile());
+	Push(new ModelDemo());
 }
 
 

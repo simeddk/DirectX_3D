@@ -24,6 +24,16 @@ private:
 	void BindMesh(); //(1)meshes[i]->Binding() »£√‚, (2) boneIndex∏¶ Set
 
 public:
+	UINT BoneCount() { return bones.size(); }
+	vector<ModelBone*>& Bones() { return bones; }
+	ModelBone* BoneByIndex(UINT index) { return bones[index]; }
+	ModelBone* BoneByName(wstring name);
+
+	UINT MeshCount() { return meshes.size(); }
+	vector<ModelMesh*>& Meshes() { return meshes; }
+	ModelMesh* MeshByIndex(UINT index) { return meshes[index]; }
+
+public:
 	struct VertexModel
 	{
 		Vector3 Position;

@@ -7,6 +7,7 @@
     <ClCompile Include="Converter.cpp">
       <Filter>Converter</Filter>
     </ClCompile>
+    <ClCompile Include="ModelDemo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
@@ -16,6 +17,7 @@
       <Filter>Converter</Filter>
     </ClInclude>
     <ClInclude Include="Types.h" />
+    <ClInclude Include="ModelDemo.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Converter">
