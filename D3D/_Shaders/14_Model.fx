@@ -46,7 +46,7 @@ float4 PS(VertexOutput input) : SV_Target
 {
 	float3 normal = normalize(input.Normal);
 	
-	float4 baseColor = float4(0.5f, 0.5f, 0.5f, 1.f);
+	float4 baseColor = float4(1, 1, 1, 1);
 	float lambert = saturate(dot(normal, -LightDirection));
 
 	return baseColor * lambert;
