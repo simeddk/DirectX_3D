@@ -1,6 +1,7 @@
 #include "Framework.h"
 #include "Model.h"
 #include "Utilities/BinaryFile.h"
+#include "Utilities/Xml.h"
 
 Model::Model()
 {
@@ -9,6 +10,19 @@ Model::Model()
 
 Model::~Model()
 {
+	for (ModelBone* bone : bones)
+		SafeDelete(bone);
+
+	for (ModelMesh* mesh : meshes)
+	{
+		for (ModelMeshPart* part : mesh->meshParts)
+			SafeDelete(part);
+
+		SafeDelete(mesh);
+	}
+
+	for (Material* material : materials)
+		SafeDelete(material);
 }
 
 void Model::ReadMesh(wstring file)
@@ -106,6 +120,14 @@ void Model::ReadMesh(wstring file)
 	SafeDelete(r);
 
 	BindBone();
+}
+
+void Model::ReadMaterial(wstring file)
+{
+	file = L"../../_Textures/" + file + L".material";
+
+	//Todo. 09090909090909
+
 	BindMesh();
 }
 
@@ -142,5 +164,10 @@ ModelBone* Model::BoneByName(wstring name)
 			return bone;
 	}
 
+	return nullptr;
+}
+
+Material* Model::MaterialByName(wstring name)
+{
 	return nullptr;
 }

@@ -16,8 +16,8 @@ private:
 	~Model();
 
 private:
-	//*.mesh 파일 읽어오기
 	void ReadMesh(wstring file);
+	void ReadMaterial(wstring file);
 
 private:
 	void BindBone(); //Make Bone Tree
@@ -32,6 +32,11 @@ public:
 	UINT MeshCount() { return meshes.size(); }
 	vector<ModelMesh*>& Meshes() { return meshes; }
 	ModelMesh* MeshByIndex(UINT index) { return meshes[index]; }
+
+	UINT MaterialCount() { return materials.size(); }
+	vector<Material*>& Materials() { return materials; }
+	Material* MaterialByIndex(UINT index) { return materials[index]; }
+	Material* MaterialByName(wstring name);
 
 public:
 	struct VertexModel
@@ -49,4 +54,5 @@ private:
 
 	vector<ModelBone*> bones;
 	vector<ModelMesh*> meshes;
+	vector<Material*> materials;
 };
