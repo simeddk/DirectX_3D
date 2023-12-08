@@ -44,3 +44,38 @@ struct asMaterial
 	string SpecularFile;
 	string NormalFile;
 };
+
+//1 Bone, 1 Frame
+struct asKeyFrameData
+{
+	float Frame;
+
+	Vector3 Scale;
+	Quaternion Rotation;
+	Vector3 Translation;
+};
+
+//1 Bone, All Frame
+struct asKeyFrame
+{
+	string BoneName;
+	vector<asKeyFrameData> Transforms;
+};
+
+//All Bone, All Frame(Final)
+struct asClip
+{
+	string Name;
+
+	UINT FrameCount;
+	float FrameRate;
+
+	vector<asKeyFrame*> Keyframes;
+};
+
+//All Bone, All Frame(Temp)
+struct asClipNode
+{
+	aiString Name;
+	vector<asKeyFrameData> keyframe;
+};

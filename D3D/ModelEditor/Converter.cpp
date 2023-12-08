@@ -367,3 +367,44 @@ string Converter::WriteTexture(string saveFolder, string file)
 
 	return Path::GetFileName(path);
 }
+
+void Converter::ExportAnimClip(UINT index, wstring savePath)
+{
+	savePath = L"../../_Models/" + savePath + L".clip";
+
+	asClip* clip = ReadClipData(scene->mAnimations[index]);
+	WriteClipData(clip, savePath);
+}
+
+asClip* Converter::ReadClipData(aiAnimation* animation)
+{
+	asClip* clip = new asClip();
+	clip->Name = animation->mName.C_Str();
+	clip->FrameRate = (float)animation->mTicksPerSecond;
+	clip->FrameCount = (UINT)animation->mDuration + 1;
+
+	vector<asClipNode> aniNodeInfos;
+	for (UINT i = 0; i < animation->mNumChannels; i++)//node : meshBone, channel : animBone
+	{
+		//Get One Anim Bone
+		aiNodeAnim* aniNode = animation->mChannels[i];
+
+		//Save Data to Temp
+		asClipNode aniNodeInfo;
+		aniNodeInfo.Name = aniNode->mNodeName;
+
+		//Todo. 
+		aniNode->mNumPositionKeys;
+		aniNode->mPositionKeys[0];
+	}
+
+	return clip;
+}
+
+void Converter::ReadKeyframeData(asClip* clip, aiNode* node, vector<struct asClipNode>& aniNodeInfos)
+{
+}
+
+void Converter::WriteClipData(asClip* clip, wstring savePath)
+{
+}

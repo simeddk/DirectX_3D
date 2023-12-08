@@ -142,6 +142,7 @@ private:
 	UINT pass = 0;
 
 	wstring materialName;
+	Material* material = nullptr;
 
 	UINT startVertex;
 	UINT vertexCount;

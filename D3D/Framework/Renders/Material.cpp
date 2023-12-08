@@ -127,11 +127,17 @@ void Material::Render()
 
 	if (diffuseMap != nullptr)
 		sDiffuseMap->SetResource(diffuseMap->SRV());
+	else
+		sDiffuseMap->SetResource(nullptr);
 	
 	if (specularMap != nullptr)
 		sSpecularMap->SetResource(specularMap->SRV());
+	else
+		sSpecularMap->SetResource(nullptr);
 
 	if (normalMap != nullptr)
 		sNormalMap->SetResource(normalMap->SRV());
+	else
+		sNormalMap->SetResource(nullptr);
 }
 
