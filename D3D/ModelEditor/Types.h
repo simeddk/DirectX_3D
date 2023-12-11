@@ -2,6 +2,9 @@
 
 #include "stdafx.h"
 
+//-----------------------------------------------------------------------------
+//Mesh
+//-----------------------------------------------------------------------------
 struct asBone
 {
 	int Index;
@@ -31,6 +34,9 @@ struct asMesh
 	vector<asMeshPart*> MeshParts;
 };
 
+//-----------------------------------------------------------------------------
+//Material
+//-----------------------------------------------------------------------------
 struct asMaterial
 {
 	string Name;
@@ -45,6 +51,9 @@ struct asMaterial
 	string NormalFile;
 };
 
+//-----------------------------------------------------------------------------
+//Animation
+//-----------------------------------------------------------------------------
 //1 Bone, 1 Frame
 struct asKeyFrameData
 {
@@ -73,9 +82,37 @@ struct asClip
 	vector<asKeyFrame*> Keyframes;
 };
 
-//All Bone, All Frame(Temp)
+//1 Bone, All Frame(Temp)
 struct asClipNode
 {
-	aiString Name;
-	vector<asKeyFrameData> keyframe;
+	aiString Name; //animBone Name
+	vector<asKeyFrameData> Keyframe;
+};
+
+//-----------------------------------------------------------------------------
+//Skinning
+//-----------------------------------------------------------------------------
+struct asBlendWeight
+{
+	Vector4 Indices = Vector4(0, 0, 0, 0);
+	Vector4 Weights = Vector4(0, 0, 0, 0);
+
+	void Set(UINT iterator, UINT boneIndex, float weight)
+	{
+		float i = (float)boneIndex;
+		float w = weight;
+
+		//Todo. 
+		switch (iterator)
+		{
+			case 0 : Indices.x = 
+		}
+	}
+};
+
+struct asBoneWeights
+{
+private:
+	typedef pair<int, float> Pair;
+	vector<Pair> BoneWeigths; //BoneIndex, BoneWeihgt
 };

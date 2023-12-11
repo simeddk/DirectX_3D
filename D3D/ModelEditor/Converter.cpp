@@ -55,6 +55,7 @@ void Converter::ReadFile(wstring file)
 void Converter::ExportMesh(wstring savePath)
 {
 	ReadBoneData(scene->mRootNode, -1, -1);
+	ReadSkinData();
 	WriteMeshData(L"../../_Models/" + savePath + L".mesh");
 }
 
@@ -136,6 +137,25 @@ void Converter::ReadMeshData(aiNode* node, int index)
 	}//for(i)
 
 	meshes.push_back(mesh);
+}
+
+void Converter::ReadSkinData()
+{
+	//Get aiMesh : fbx의 메쉬 정보
+	//aiMesh->GetBone : 스키닝 가중치 정보를 얻기 위함
+	//Write Model::VertexModel
+
+	for (UINT i = 0; i < scene->mNumMeshes; i++)
+	{
+		aiMesh* aiMesh = scene->mMeshes[i];
+
+		if (aiMesh->HasBones() == false) continue;
+
+		asMesh* mesh = meshes[i];
+
+
+	}
+
 }
 
 void Converter::WriteMeshData(wstring savePath)
@@ -393,18 +413,136 @@ asClip* Converter::ReadClipData(aiAnimation* animation)
 		asClipNode aniNodeInfo;
 		aniNodeInfo.Name = aniNode->mNodeName;
 
-		//Todo. 
-		aniNode->mNumPositionKeys;
-		aniNode->mPositionKeys[0];
-	}
+		UINT keyCount = max(aniNode->mNumPositionKeys, aniNode->mNumRotationKeys);
+		keyCount = max(keyCount, aniNode->mNumScalingKeys);
+
+		asKeyFrameData frameData;
+		for (UINT k = 0 ; k < keyCount; k++)
+		{
+			bool bFound = false;
+			UINT t = aniNodeInfo.Keyframe.size();
+			
+			//Position Key
+			if (fabsf((float)aniNode->mPositionKeys[k].mTime - (float)t) <= D3DX_16F_EPSILON)
+			{
+				aiVectorKey key = aniNode->mPositionKeys[k];
+				memcpy_s(&frameData.Translation, sizeof(Vector3), &key.mValue, sizeof(aiVector3D));
+				frameData.Frame = aniNode->mPositionKeys[k].mTime;
+
+				bFound = true;
+			}
+
+			//Rotation Key
+			if (fabsf((float)aniNode->mScalingKeys[k].mTime - (float)t) <= D3DX_16F_EPSILON)
+			{
+				aiQuatKey key = aniNode->mRotationKeys[k];
+				frameData.Rotation.x = key.mValue.x;
+				frameData.Rotation.y = key.mValue.y;
+				frameData.Rotation.z = key.mValue.z;
+				frameData.Rotation.w = key.mValue.w;
+
+				frameData.Frame = aniNode->mScalingKeys[k].mTime;
+				 
+				bFound = true;
+			}
+
+			//Scaling Key
+			if (fabsf((float)aniNode->mScalingKeys[k].mTime - (float)t) <= D3DX_16F_EPSILON)
+			{
+				aiVectorKey key = aniNode->mScalingKeys[k];
+				memcpy_s(&frameData.Scale, sizeof(Vector3), &key.mValue, sizeof(aiVector3D));
+				frameData.Frame = aniNode->mScalingKeys[k].mTime;
+
+				bFound = true;
+			}
+
+			if (bFound == true)
+				aniNodeInfo.Keyframe.push_back(frameData);
+
+		}//for (anim KeyCount)
+
+		//Find No Exist Key
+		if (aniNodeInfo.Keyframe.size() < clip->FrameCount)
+		{
+			UINT count = clip->FrameCount - aniNodeInfo.Keyframe.size();
+			asKeyFrameData lastFrame = aniNodeInfo.Keyframe.back();
+
+			for (UINT n = 0; n < count; n++)
+				aniNodeInfo.Keyframe.push_back(lastFrame);
+		}
+
+		aniNodeInfos.push_back(aniNodeInfo);
+
+	} //for(animBone Count)
+
+	ReadKeyframeData(clip, scene->mRootNode, aniNodeInfos);
 
 	return clip;
 }
 
 void Converter::ReadKeyframeData(asClip* clip, aiNode* node, vector<struct asClipNode>& aniNodeInfos)
 {
+	asKeyFrame* keyframe = new asKeyFrame();
+	keyframe->BoneName = node->mName.C_Str(); //meshBone Name
+
+	asClipNode* asClipNode = nullptr;
+
+	for (UINT i = 0; i < aniNodeInfos.size(); i++)
+	{
+		if (aniNodeInfos[i].Name == node->mName)
+		{
+			asClipNode = &aniNodeInfos[i];
+			break;
+		}
+	}
+
+	for (UINT i = 0; i < clip->FrameCount; i++)
+	{
+		asKeyFrameData frameData; //1 Bone, 1 Frame
+
+		if (asClipNode == nullptr)
+		{
+			frameData.Frame = (float)i;
+
+			Matrix meshTransform(node->mTransformation[0]);
+			D3DXMatrixTranspose(&meshTransform, &meshTransform);
+
+			D3DXMatrixDecompose(&frameData.Scale, &frameData.Rotation, &frameData.Translation, &meshTransform);
+		}
+		else
+		{
+			frameData = asClipNode->Keyframe[i];
+		}
+
+		keyframe->Transforms.push_back(frameData); //1 Bone. All Frame
+	}
+
+	clip->Keyframes.push_back(keyframe);
+
+	for (UINT i = 0; i < node->mNumChildren; i++)
+		ReadKeyframeData(clip, node->mChildren[i], aniNodeInfos);
 }
 
 void Converter::WriteClipData(asClip* clip, wstring savePath)
 {
+	Path::CreateFolders(Path::GetDirectoryName(savePath));
+
+	BinaryWriter* w = new BinaryWriter(savePath);
+
+	w->String(clip->Name);
+	w->Float(clip->FrameRate);
+	w->UInt(clip->FrameCount);
+
+	w->UInt(clip->Keyframes.size());
+	for (asKeyFrame* keyframe : clip->Keyframes)
+	{
+		w->String(keyframe->BoneName);
+
+		w->UInt(keyframe->Transforms.size());
+		w->Byte(&keyframe->Transforms[0], sizeof(asKeyFrameData) * keyframe->Transforms.size());
+
+		SafeDelete(keyframe);
+	}
+
+	SafeDelete(w);
 }

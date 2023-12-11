@@ -16,6 +16,7 @@ public:
 private:
 	void ReadBoneData(aiNode* node, int index, int parent);
 	void ReadMeshData(aiNode* node, int index);
+	void ReadSkinData();
 	void WriteMeshData(wstring savePath);
 
 	//scene의 maetrial 정보를 *.material(xml)
