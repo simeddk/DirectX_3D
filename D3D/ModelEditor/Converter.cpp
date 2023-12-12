@@ -141,10 +141,6 @@ void Converter::ReadMeshData(aiNode* node, int index)
 
 void Converter::ReadSkinData()
 {
-	//Get aiMesh : fbx의 메쉬 정보
-	//aiMesh->GetBone : 스키닝 가중치 정보를 얻기 위함
-	//Write Model::VertexModel
-
 	for (UINT i = 0; i < scene->mNumMeshes; i++)
 	{
 		aiMesh* aiMesh = scene->mMeshes[i];
@@ -153,8 +149,49 @@ void Converter::ReadSkinData()
 
 		asMesh* mesh = meshes[i];
 
+		vector<asBoneWeights> boneWeigts;
+		boneWeigts.assign(mesh->Vertices.size(), asBoneWeights());
 
-	}
+		//aiMesh(fbx)에 연결된 bone & 저장된 bones(asBone) 비교 -> 이름이 같은 bone을 찾는다
+		for (UINT b = 0; b < aiMesh->mNumBones; b++)
+		{
+			aiBone* aiMeshBone = aiMesh->mBones[b];
+
+			UINT boneIndex = 0;
+
+			for (asBone* bone : bones)
+			{
+				if (bone->Name == (string)aiMeshBone->mName.C_Str())
+				{
+					boneIndex = bone->Index;
+					break;
+				}
+			} //for (asBone)
+
+			//이 bone에 붙은 가중치를 Get -> 내림차순 정렬 
+			for (UINT w = 0; w < aiMeshBone->mNumWeights; w++)
+			{
+				 UINT vertexId = aiMeshBone->mWeights[w].mVertexId;
+				 float weight = aiMeshBone->mWeights[w].mWeight;
+
+				 boneWeigts[vertexId].AddWeights(boneIndex, weight);
+			} //for (w)
+		} //for (b)
+
+		//이 가중치를 Normalize -> mesh->Vertices에 저장
+		for (UINT v = 0; v < boneWeigts.size(); v++)
+		{
+			boneWeigts[v].Normalize();
+
+			asBlendWeight blendWeight;
+			boneWeigts[v].GetBlendWeigths(blendWeight);
+
+			mesh->Vertices[v].BlendIndices = blendWeight.Indices;
+			mesh->Vertices[v].BlendWeights = blendWeight.Weights;
+		}
+
+
+	} //for (scene->mNumMeshes)
 
 }
 

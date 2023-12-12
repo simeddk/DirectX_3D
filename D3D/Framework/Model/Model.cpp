@@ -18,6 +18,9 @@ Model::~Model()
 
 	for (Material* material : materials)
 		SafeDelete(material);
+
+	for (ModelClip* clip : clips)
+		SafeDelete(clip);
 }
 
 void Model::ReadMesh(wstring file)
@@ -196,6 +199,33 @@ void Model::ReadMaterial(wstring file)
 	BindMesh();
 }
 
+void Model::ReadClip(wstring file)
+{
+	file = L"../../_Models/" + file + L".clip";
+
+	BinaryReader* r = new BinaryReader(file);
+
+	ModelClip* clip = new ModelClip();
+	clip->name = String::ToWString(r->String());
+	clip->frameRate = r->Float();
+	clip->frameCount = r->UInt();
+
+	UINT count = r->UInt();
+	for (UINT i = 0; i < count; i++)
+	{
+		ModelKeyFrame* keyframe = new ModelKeyFrame();
+		keyframe->BoneName = r->String();
+
+		UINT size = r->UInt();
+		if (size > 0)
+		{
+			//Todo.....202020202020
+		}
+	}
+
+	clips.push_back(clip);
+}
+
 void Model::BindBone()
 {
 	root = bones[0];
@@ -240,5 +270,10 @@ Material* Model::MaterialByName(wstring name)
 			return material;
 	}
 
+	return nullptr;
+}
+
+ModelClip* Model::ClipByName(wstring name)
+{
 	return nullptr;
 }
