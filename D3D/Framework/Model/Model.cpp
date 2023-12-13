@@ -214,14 +214,21 @@ void Model::ReadClip(wstring file)
 	for (UINT i = 0; i < count; i++)
 	{
 		ModelKeyFrame* keyframe = new ModelKeyFrame();
-		keyframe->BoneName = r->String();
+		keyframe->BoneName = String::ToWString(r->String());
 
 		UINT size = r->UInt();
 		if (size > 0)
 		{
-			//Todo.....202020202020
+			keyframe->Transforms.assign(size, ModelKeyFrameData());
+			
+			void* ptr = (void*)&keyframe->Transforms[0];
+			r->Byte(&ptr, sizeof(ModelKeyFrameData) * size);
 		}
+
+		clip->keyframeMap[keyframe->BoneName] = keyframe;
 	}
+
+	SafeDelete(r);
 
 	clips.push_back(clip);
 }
@@ -275,5 +282,11 @@ Material* Model::MaterialByName(wstring name)
 
 ModelClip* Model::ClipByName(wstring name)
 {
+	for (ModelClip* clip : clips)
+	{
+		if (name == clip->name)
+			return clip;
+	}
+
 	return nullptr;
 }
