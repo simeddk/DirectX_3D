@@ -6,16 +6,29 @@ ModelAnimator::ModelAnimator(Shader* shader)
 {
 	model = new Model();
 	transform = new Transform(shader);
+
+	frameBuffer = new ConstantBuffer(&keyFrameDesc, sizeof(KeyFrameDesc));
 }
 
 ModelAnimator::~ModelAnimator()
 {
 	SafeDelete(model);
 	SafeDelete(transform);
+
+	SafeDeleteArray(clipTransform);
+	SafeRelease(texture);
+	SafeRelease(transformsSRV);
+
+	SafeDelete(frameBuffer);
 }
 
 void ModelAnimator::Update()
 {
+	//Test
+	ModelClip* clip = model->ClipByIndex(keyFrameDesc.Clip);
+	ImGui::InputInt("Clip Index", &keyFrameDesc.Clip);
+
+
 	if (texture == nullptr)
 	{
 		SetShader(shader, true);
@@ -28,6 +41,11 @@ void ModelAnimator::Update()
 
 void ModelAnimator::Render()
 {
+	frameBuffer->Render();
+	sFrameBuffer->SetConstantBuffer(frameBuffer->Buffer());
+
+	sTransformsSRV->SetResource(transformsSRV);
+
 	for (ModelMesh* mesh : model->meshes)
 	{
 		mesh->SetTransform(transform);
@@ -59,6 +77,12 @@ void ModelAnimator::SetShader(Shader* shader, bool bDontCreateNewTransform)
 		SafeDelete(transform);
 		transform = new Transform(shader);
 	}
+
+	sTransformsSRV = shader->AsSRV("TransformsMap");
+	sFrameBuffer = shader->AsConstantBuffer("CB_KeyFrames");
+
+	for (ModelMesh* mesh : model->Meshes())
+		mesh->SetShader(shader);
 }
 
 void ModelAnimator::Pass(UINT pass)
@@ -87,14 +111,47 @@ void ModelAnimator::CreateTexture()
 		desc.SampleDesc.Count = 1;
 
 		UINT pageSize = MAX_MODEL_TRANSFORMS * MAX_MODEL_KEYFRAMES * sizeof(Matrix);
-		void* p = VirtualAlloc(nullptr, pageSize * model->ClipCount(), MEM_RESERVE, );
+		void* p = VirtualAlloc(nullptr, pageSize * model->ClipCount(), MEM_RESERVE, PAGE_READWRITE);
+		
+		for (UINT c = 0; c < model->ClipCount(); c++)
+		{
+			UINT clipStart = pageSize * c;
 
-
+			for (UINT k = 0; k < MAX_MODEL_KEYFRAMES; k++)
+			{
+				void* temp = (BYTE*)p + MAX_MODEL_TRANSFORMS * k * sizeof(Matrix) + clipStart;
+				
+				VirtualAlloc(temp, MAX_MODEL_TRANSFORMS * sizeof(Matrix), MEM_COMMIT, PAGE_READWRITE);
+				memcpy(temp, clipTransform[c].Trasnform[k], MAX_MODEL_TRANSFORMS * sizeof(Matrix));
+			}
+		}
 
 		D3D11_SUBRESOURCE_DATA* subResource = new D3D11_SUBRESOURCE_DATA[model->ClipCount()];
-		
+		for (UINT c = 0; c < model->ClipCount(); c++)
+		{
+			void* temp = (BYTE*)p + c * pageSize;
 
-		D3D::GetDevice()->CreateTexture2D(&desc, subResource, &texture);
+			subResource[c].pSysMem = temp;
+			subResource[c].SysMemPitch = MAX_MODEL_TRANSFORMS * sizeof(Matrix);
+			subResource[c].SysMemSlicePitch = pageSize;
+		}
+
+		Check(D3D::GetDevice()->CreateTexture2D(&desc, subResource, &texture));
+
+		SafeDeleteArray(subResource);
+		VirtualFree(p, 0, MEM_RELEASE);
+	}
+
+	//Create SRV
+	{
+		D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+		ZeroMemory(&desc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+		desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		desc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DARRAY;
+		desc.Texture2DArray.MipLevels = 1;
+		desc.Texture2DArray.ArraySize = model->ClipCount();
+
+		Check(D3D::GetDevice()->CreateShaderResourceView(texture, &desc, &transformsSRV));
 	}
 }
 

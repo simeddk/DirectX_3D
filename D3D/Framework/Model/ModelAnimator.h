@@ -49,7 +49,27 @@ private:
 
 private:
 	ID3D11Texture2D* texture = nullptr;
+	ID3D11ShaderResourceView* transformsSRV;
+	ID3DX11EffectShaderResourceVariable* sTransformsSRV;
 
+private:
+	struct KeyFrameDesc
+	{
+		int Clip = 0;
+
+		UINT CurrentFrame = 0;
+		UINT NextFrame = 0;
+
+		float Time = 0.f; //다음 프레임으로 넘어갈 시간(이 값이 1이 됐을 때)
+		float RunningTime; //델타 타임 누적
+
+		float Speed = 1.f;
+
+		Vector2 Padding;
+	} keyFrameDesc;
+
+	ConstantBuffer* frameBuffer;
+	ID3DX11EffectConstantBuffer* sFrameBuffer;
 
 private:
 	Shader* shader;
