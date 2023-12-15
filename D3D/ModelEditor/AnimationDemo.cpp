@@ -32,6 +32,21 @@ void AnimationDemo::Destroy()
 
 void AnimationDemo::Update()
 {
+	//Test
+	static int clip = 0;
+	static float speed = 1.f;
+	static float takeTime = 1.f;
+
+	ImGui::InputInt("Clip", &clip);
+	clip = Math::Clamp(clip, 0, 4);
+
+	ImGui::SliderFloat("Speed", &speed, 0.1f, 5.f);
+	ImGui::SliderFloat("TakeTime", &takeTime, 0.1f, 5.f);
+
+	if (ImGui::Button("Apply"))
+		kachujin->PlayTweenMode(clip, speed, takeTime);
+
+
 	static Vector3 LightDirection = Vector3(-1, -1, +1);
 	ImGui::SliderFloat3("LightDirection", LightDirection, -1, +1);
 	shader->AsVector("LightDirection")->SetFloatVector(LightDirection);
