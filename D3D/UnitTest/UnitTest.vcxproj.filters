@@ -42,6 +42,9 @@
     <ClCompile Include="CubeMapDemo.cpp">
       <Filter>Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="ThreadDemo.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
@@ -85,6 +88,9 @@
     <ClInclude Include="CubeMapDemo.h">
       <Filter>Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="ThreadDemo.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Line">
@@ -95,6 +101,9 @@
     </Filter>
     <Filter Include="World">
       <UniqueIdentifier>{475c5738-ff29-42c7-ac3c-82e194b7d8ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread">
+      <UniqueIdentifier>{fbbed457-5d98-4edb-8c34-437c509e045c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

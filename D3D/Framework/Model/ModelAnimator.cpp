@@ -120,7 +120,6 @@ void ModelAnimator::UpdateBledingFrame()
 {
 	BlendDesc& desc = blendDesc;
 	
-	
 	for (UINT i = 0; i < 3; i++)
 	{
 		ModelClip* clip = model->ClipByIndex(desc.Clip[i].Clip);
@@ -138,6 +137,7 @@ void ModelAnimator::UpdateBledingFrame()
 			desc.Clip[i].NextFrame = (desc.Clip[i].CurrentFrame + 1) % clip->FrameCount();
 		}
 		desc.Clip[i].Time = desc.Clip[i].RunningTime / time;
+
 	}
 }
 
@@ -176,6 +176,9 @@ void ModelAnimator::PlayBlendMode(UINT clip1, UINT clip2, UINT clip3)
 
 void ModelAnimator::SetBlendAlpha(float alpha)
 {
+	alpha = Math::Clamp(alpha, 0.f, 2.f);
+
+	blendDesc.Alpha = alpha;
 }
 
 void ModelAnimator::SetShader(Shader* shader, bool bDontCreateNewTransform)

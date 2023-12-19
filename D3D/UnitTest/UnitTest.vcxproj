@@ -32,6 +32,7 @@
     </ClCompile>
     <ClCompile Include="TerrainDemo.cpp" />
     <ClCompile Include="TextureDemo.cpp" />
+    <ClCompile Include="ThreadDemo.cpp" />
     <ClCompile Include="VertexLineColorDemo.cpp" />
     <ClCompile Include="VertexLineDemo.cpp" />
     <ClCompile Include="VertexTopologyDemo.cpp" />
@@ -49,6 +50,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TerrainDemo.h" />
     <ClInclude Include="TextureDemo.h" />
+    <ClInclude Include="ThreadDemo.h" />
     <ClInclude Include="VertexLineColorDemo.h" />
     <ClInclude Include="VertexLineDemo.h" />
     <ClInclude Include="VertexTopologyDemo.h" />

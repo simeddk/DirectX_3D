@@ -37,14 +37,30 @@ void AnimationDemo::Update()
 	static float speed = 1.f;
 	static float takeTime = 1.f;
 
-	ImGui::InputInt("Clip", &clip);
-	clip = Math::Clamp(clip, 0, 4);
+	static bool bBlendMode = false;
+	static float blendAlpha = 0.f;
 
-	ImGui::SliderFloat("Speed", &speed, 0.1f, 5.f);
-	ImGui::SliderFloat("TakeTime", &takeTime, 0.1f, 5.f);
+	ImGui::Checkbox("BlendMode", &bBlendMode);
 
-	if (ImGui::Button("Apply"))
-		kachujin->PlayTweenMode(clip, speed, takeTime);
+	if (bBlendMode == false)
+	{
+		ImGui::InputInt("Clip", &clip);
+		clip = Math::Clamp(clip, 0, 4);
+
+		ImGui::SliderFloat("Speed", &speed, 0.1f, 5.f);
+		ImGui::SliderFloat("TakeTime", &takeTime, 0.1f, 5.f);
+
+		if (ImGui::Button("Apply"))
+			kachujin->PlayTweenMode(clip, speed, takeTime);
+	}
+	else
+	{
+		ImGui::SliderFloat("BlendAlpha", &blendAlpha, 0, 2);
+		kachujin->SetBlendAlpha(blendAlpha);
+
+		if (ImGui::Button("Apply"))
+			kachujin->PlayBlendMode(0, 1, 2);
+	}
 
 
 	static Vector3 LightDirection = Vector3(-1, -1, +1);

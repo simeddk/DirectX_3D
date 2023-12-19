@@ -179,15 +179,28 @@ void SetBlendingWorld(inout matrix world, VertexModel input)
 			n3 = TransformsMap.Load(int4(indices[i] * 4 + 3, BlendingFrame.Clip[c].NextFrame, BlendingFrame.Clip[c].Clip, 0)); //_41_42_43_44
 			next = matrix(n0, n1, n2, n3);
 		
-			//Todo.
-			currAnim = lerp(curr, next, time[0]);
-		}
+			currAnim[c] = lerp(curr, next, BlendingFrame.Clip[c].Time);
+		} //for (c)
 			
-		transform += mul(weights[i], currAnim);
-	}
+		
+		float alpha = BlendingFrame.Alpha;
+		int clipIndex[2] = { 0, 1 };
+		
+		if (alpha > 1)
+		{
+			clipIndex[0] = 1;
+			clipIndex[1] = 2;
+
+			alpha -= 1.f;
+		} //if (alpha > 1)
+			
+		anim = lerp(currAnim[clipIndex[0]], currAnim[clipIndex[1]], alpha);
+	
+		transform += mul(weights[i], anim);
+	} //for(i)
 	
 	world = mul(transform, world);
-	//invMesh * anim * parent (C++) * weight * World (FX)
+	
 }
 
 //-----------------------------------------------------------------------------
@@ -195,7 +208,10 @@ VertexOutput VS(VertexModel input)
 {
 	VertexOutput output;
 	
-	SetAnimationWorld(World, input);
+	if (BlendingFrame.Mode == 0)
+		SetAnimationWorld(World, input);
+	else
+		SetBlendingWorld(World, input);
 	
 	output.Position = WorldPosition(input.Position);
 	output.Position = ViewProjection(output.Position);
