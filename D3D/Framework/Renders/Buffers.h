@@ -67,3 +67,58 @@ private:
 	void* data;
 	UINT dataSize;
 };
+
+//-----------------------------------------------------------------------------
+// ComputeBuffer(Super)
+//-----------------------------------------------------------------------------
+class ComputeBuffer
+{
+public:
+	ComputeBuffer() = default;
+	virtual ~ComputeBuffer();
+
+protected:
+	virtual void CreateInput() {}
+	virtual void CreateSRV() {}
+
+	virtual void CreateOutput() {}
+	virtual void CreateUAV() {}
+
+	void CreateBuffer();
+
+public:
+	ID3D11ShaderResourceView* SRV() { return srv; }
+	ID3D11UnorderedAccessView* UAV() { return uav; }
+
+protected:
+	ID3D11Resource* input = nullptr;
+	ID3D11ShaderResourceView* srv = nullptr;
+
+	ID3D11Resource* output = nullptr;
+	ID3D11UnorderedAccessView* uav = nullptr;
+};
+
+//-----------------------------------------------------------------------------
+// RawBuffer(C++), ByteAddress(HLSL)
+//-----------------------------------------------------------------------------
+class RawBuffer : public ComputeBuffer
+{
+public:
+	RawBuffer(void* inputData, UINT inputByte, UINT outputByte);
+	~RawBuffer();
+
+	virtual void CreateInput() override;
+	virtual void CreateSRV() override;
+
+	virtual void CreateOutput()  override;
+	virtual void CreateUAV()  override;
+
+public:
+	void CopyToInput(void* data);
+	void CopyFromOutput(void* data);
+
+private:
+	void* inputData;
+	UINT inputByte;
+	UINT outputByte;
+};

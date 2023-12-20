@@ -29,6 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shaders", "_Shaders", "{48
 		_Shaders\13_CubeSky.fx = _Shaders\13_CubeSky.fx
 		_Shaders\14_Model.fx = _Shaders\14_Model.fx
 		_Shaders\15_Animation.fx = _Shaders\15_Animation.fx
+		_Shaders\16_ByteAddress.fx = _Shaders\16_ByteAddress.fx
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ModelEditor", "ModelEditor\ModelEditor.vcxproj", "{13908599-3DF0-4DFA-9608-A21DDE571113}"
