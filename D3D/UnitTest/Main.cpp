@@ -16,11 +16,11 @@
 #include "MeshDemo.h"
 #include "CubeMapDemo.h"
 #include "ThreadDemo.h"
+#include "RawBufferDemo.h"
 
 void Main::Initialize()
 {
-	Push(new ThreadDemo());
-	//Push(new TerrainDemo());
+	Push(new RawBufferDemo());
 }
 
 
