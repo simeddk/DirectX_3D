@@ -32,6 +32,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TerrainDemo.cpp" />
+    <ClCompile Include="TextureBufferDemo.cpp" />
     <ClCompile Include="TextureDemo.cpp" />
     <ClCompile Include="ThreadDemo.cpp" />
     <ClCompile Include="VertexLineColorDemo.cpp" />
@@ -51,6 +52,7 @@
     <ClInclude Include="SamplerStateDemo.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TerrainDemo.h" />
+    <ClInclude Include="TextureBufferDemo.h" />
     <ClInclude Include="TextureDemo.h" />
     <ClInclude Include="ThreadDemo.h" />
     <ClInclude Include="VertexLineColorDemo.h" />

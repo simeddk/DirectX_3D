@@ -156,3 +156,36 @@ private:
 	ID3D11ShaderResourceView* outputSRV;
 	ID3D11Texture2D* result = nullptr;
 };
+
+//-----------------------------------------------------------------------------
+// TextureBuffer
+//-----------------------------------------------------------------------------
+class StructuredBuffer : public ComputeBuffer
+{
+public:
+	StructuredBuffer(void* inputData, UINT inputStride, UINT inputCount, UINT outputStride = 0, UINT outputCount = 0);
+	~StructuredBuffer();
+
+private:
+	void CreateInput() override;
+	void CreateSRV() override;
+
+	void CreateOutput() override;
+	void CreateUAV() override;
+
+public:
+	UINT InputByteWidth() { return inputStride * inputCount; }
+	UINT OutputByteWidth() { return outputStride * outputCount; }
+
+	void CopyToInput(void* data);
+	void CopyFromOutput(void* data);
+
+private:
+	void* inputData;
+
+	UINT inputStride;
+	UINT inputCount;
+
+	UINT outputStride;
+	UINT outputCount;
+};
