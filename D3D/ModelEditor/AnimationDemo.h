@@ -20,6 +20,9 @@ private:
 
 	ModelAnimator* kachujin = nullptr;
 
+	ColliderObject* colliderObject;
+	Matrix bones[MAX_MODEL_TRANSFORMS];
+
 	CubeSky* sky;
 	Shader* planeShader;
 	MeshPlane* plane;

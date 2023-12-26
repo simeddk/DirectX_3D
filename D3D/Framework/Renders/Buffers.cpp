@@ -438,13 +438,33 @@ void StructuredBuffer::CreateOutput()
 
 void StructuredBuffer::CreateUAV()
 {
-	//Todo
+	ID3D11Buffer* buffer = (ID3D11Buffer*)output;
+
+	D3D11_UNORDERED_ACCESS_VIEW_DESC desc;
+	ZeroMemory(&desc, sizeof(D3D11_UNORDERED_ACCESS_VIEW_DESC));
+	desc.Format = DXGI_FORMAT_UNKNOWN;
+	desc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+	desc.Buffer.NumElements = outputCount;
+
+	Check(D3D::GetDevice()->CreateUnorderedAccessView(buffer, &desc, &uav));
 }
 
 void StructuredBuffer::CopyToInput(void* data)
 {
+	D3D11_MAPPED_SUBRESOURCE subResource;
+	D3D::GetDC()->Map(input, 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+	{
+		memcpy(subResource.pData, data, InputByteWidth());
+	}
+	D3D::GetDC()->Unmap(input, 0);
 }
 
 void StructuredBuffer::CopyFromOutput(void* data)
 {
+	D3D11_MAPPED_SUBRESOURCE subResource;
+	D3D::GetDC()->Map(output, 0, D3D11_MAP_READ, 0, &subResource);
+	{
+		memcpy(data, subResource.pData, OutputByteWidth());
+	}
+	D3D::GetDC()->Unmap(output, 0);
 }

@@ -28,6 +28,8 @@ public:
 	Transform* GetTransform() { return transform; }
 	Model* GetModel() { return model; }
 
+	void GetAttachBones(Matrix* matrix);
+
 private:
 	void CreateTexture();
 	void CreateClipTransform(UINT index);
@@ -117,4 +119,20 @@ private:
 	Model* model;
 
 	Transform* transform; //Actor Transform(WS)
+
+	//Compute Bone World from CS
+private:
+	float frameRate = 30.f; //CS Dispatch Per 1/30 
+	float frameTime = 0.f; //Add DeltaTime
+
+	Shader* computeShader;
+
+	ID3DX11EffectMatrixVariable* sComputeWorld;
+	ID3DX11EffectConstantBuffer* sComputeFrameBuffer;
+	ID3DX11EffectConstantBuffer* sComputeBlendBuffer;
+	ID3DX11EffectShaderResourceVariable* sComputeTransformsSRV;
+
+	StructuredBuffer* computeBoneBuffer;
+	ID3DX11EffectShaderResourceVariable* sComputeInputBoneBuffer;
+	ID3DX11EffectUnorderedAccessViewVariable* sComputeOutputBoneBuffer;
 };

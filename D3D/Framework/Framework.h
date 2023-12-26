@@ -104,3 +104,4 @@ typedef D3DXPLANE Plane;
 #include "Environment/CubeSky.h"
 
 #include "Objects/CubeMap.h"
+#include "Objects/Collider.h"

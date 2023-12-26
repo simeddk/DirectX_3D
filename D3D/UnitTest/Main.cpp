@@ -21,7 +21,7 @@
 
 void Main::Initialize()
 {
-	Push(new TextureBufferDemo());
+	Push(new TerrainDemo());
 }
 
 

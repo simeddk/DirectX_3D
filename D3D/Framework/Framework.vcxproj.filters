@@ -125,6 +125,9 @@
     <ClCompile Include="Objects\Canvas.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Objects\Collider.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Renders">
@@ -278,6 +281,9 @@
       <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Canvas.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Collider.h">
       <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
