@@ -81,6 +81,19 @@ DepthStencilState DepthEnable_False
 };
 
 //-----------------------------------------------------------------------------
+//MeshOutput(VS -> RS)
+//-----------------------------------------------------------------------------
+struct MeshOutput
+{
+	float4 Position : SV_Position; //Rasterizing Position
+	float3 oPosition : Position1; //Original Position
+	float3 wPosition : Position2; //World Position
+    
+	float3 Normal : Normal;
+	float2 Uv : Uv;
+};
+
+//-----------------------------------------------------------------------------
 //VS -> PS
 //-----------------------------------------------------------------------------
 #define P_VP(name, vs, ps) \

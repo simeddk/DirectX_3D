@@ -18,10 +18,11 @@
 #include "ThreadDemo.h"
 #include "RawBufferDemo.h"
 #include "TextureBufferDemo.h"
+#include "InstancingDemo.h"
 
 void Main::Initialize()
 {
-	Push(new TerrainDemo());
+	Push(new InstancingDemo());
 }
 
 

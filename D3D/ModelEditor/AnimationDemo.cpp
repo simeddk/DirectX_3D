@@ -88,8 +88,8 @@ void AnimationDemo::Update()
 		//ImGui::SliderFloat3("Init", (float*)&Init, -10, 10);
 		//colliderObject->Init->Position(Init);
 
-		vector<ModelBone*> bones = kachujin->GetModel()->Bones();
-		int a = 0;
+		//vector<ModelBone*> bones = kachujin->GetModel()->Bones();
+		//int a = 0;
 	}
 
 }

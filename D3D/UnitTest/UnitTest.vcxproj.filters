@@ -51,6 +51,9 @@
     <ClCompile Include="TextureBufferDemo.cpp">
       <Filter>Thread</Filter>
     </ClCompile>
+    <ClCompile Include="InstancingDemo.cpp">
+      <Filter>Instancing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
@@ -103,6 +106,9 @@
     <ClInclude Include="TextureBufferDemo.h">
       <Filter>Thread</Filter>
     </ClInclude>
+    <ClInclude Include="InstancingDemo.h">
+      <Filter>Instancing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Line">
@@ -116,6 +122,9 @@
     </Filter>
     <Filter Include="Thread">
       <UniqueIdentifier>{fbbed457-5d98-4edb-8c34-437c509e045c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Instancing">
+      <UniqueIdentifier>{3b63408b-c032-4180-b680-b61666c86542}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
