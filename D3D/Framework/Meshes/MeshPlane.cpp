@@ -1,9 +1,8 @@
 #include "Framework.h"
 #include "MeshPlane.h"
 
-MeshPlane::MeshPlane(Shader* shader, float tileU, float tileV)
-	: Mesh(shader)
-	, tileU(tileU)
+MeshPlane::MeshPlane(float tileU, float tileV)
+	: tileU(tileU)
 	, tileV(tileV)
 {
 }

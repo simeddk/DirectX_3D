@@ -11,13 +11,7 @@ void AnimationDemo::Initialize()
 	
 	Kachujin();
 
-	sky = new CubeSky(L"Environment/GrassCube1024.dds");
-	sky->Pass(2);
-
-	planeShader = new Shader(L"11_Mesh.fxo");
-	plane = new MeshPlane(planeShader, 6, 6);
-	plane->GetTransform()->Scale(12, 1, 12);
-	plane->DiffuseMap(L"Floor.png");
+	
 }
 
 void AnimationDemo::Destroy()
@@ -26,9 +20,7 @@ void AnimationDemo::Destroy()
 	SafeDelete(kachujin);
 	SafeDelete(colliderObject);
 
-	SafeDelete(sky);
-	SafeDelete(planeShader);
-	SafeDelete(plane);
+	
 }
 
 void AnimationDemo::Update()
@@ -67,14 +59,12 @@ void AnimationDemo::Update()
 	static Vector3 LightDirection = Vector3(-1, -1, +1);
 	ImGui::SliderFloat3("LightDirection", LightDirection, -1, +1);
 	shader->AsVector("LightDirection")->SetFloatVector(LightDirection);
-	planeShader->AsVector("LightDirection")->SetFloatVector(LightDirection);
+	
 
 	static UINT pass = 0;
 	ImGui::InputInt("Pass", (int*)&pass);
 	pass %= 2;
 	
-	sky->Update();
-	plane->Update();
 
 	if (kachujin != nullptr)
 	{
@@ -96,8 +86,6 @@ void AnimationDemo::Update()
 
 void AnimationDemo::Render()
 {
-	sky->Render();
-	plane->Render();
 
 	if (kachujin != nullptr)
 	{

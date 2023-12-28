@@ -12,13 +12,6 @@ void ModelDemo::Initialize()
 	Tank();
 	Tower();
 	Airplane();
-
-	sky = new CubeSky(L"Environment/GrassCube1024.dds");
-	sky->Pass(2);
-
-	plane = new MeshPlane(shader, 6, 6);
-	plane->GetTransform()->Scale(12, 1, 12);
-	plane->DiffuseMap(L"Floor.png");
 }
 
 void ModelDemo::Destroy()
@@ -28,15 +21,11 @@ void ModelDemo::Destroy()
 	SafeDelete(tower);
 	SafeDelete(airplane);
 
-	SafeDelete(sky);
-	SafeDelete(plane);
 }
 
 void ModelDemo::Update()
 {
-	sky->Update();
-	plane->Update();
-
+	
 	if (tank != nullptr)
 	{
 		//tank->Pass(pass);
@@ -58,11 +47,7 @@ void ModelDemo::Update()
 
 void ModelDemo::Render()
 {
-	sky->Render();
-
-	plane->Pass(0);
-	plane->Render();
-
+	
 	if (tank != nullptr)
 	{
 		tank->Pass(1);
