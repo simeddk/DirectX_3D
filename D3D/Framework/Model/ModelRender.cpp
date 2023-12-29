@@ -19,8 +19,8 @@ ModelRender::~ModelRender()
 	SafeDelete(instanceWorldBuffer);
 	SafeDelete(instanceColorBuffer);
 
-	SafeDelete(texture);
-	SafeDelete(transformsSRV);
+	//SafeDelete(texture);
+	//SafeDelete(transformsSRV);
 
 	for (Transform* transform : transforms)
 		SafeDelete(transform);
@@ -42,10 +42,13 @@ void ModelRender::Update()
 
 void ModelRender::Render()
 {
+	instanceWorldBuffer->Render();
+	instanceColorBuffer->Render();
+	sTransformsSRV->SetResource(transformsSRV);
+
 	for (ModelMesh* mesh : model->meshes)
 	{
-		mesh->SetTransform(transform);
-		mesh->Render();
+		mesh->Render(transforms.size());
 	}
 }
 
@@ -56,8 +59,6 @@ void ModelRender::ReadMesh(wstring file)
 
 void ModelRender::ReadMaterial(wstring file)
 {
-	bRead = true;
-
 	model->ReadMaterial(file);
 }
 
@@ -81,67 +82,62 @@ void ModelRender::CreateTexture()
 	desc.ArraySize = 1;
 	desc.SampleDesc.Count = 1;
 
-	Matrix bones[MAX_MODEL_TRANSFORMS];
 	for (UINT i = 0; i < MAX_MODEL_INSTANCE; i++)
 	{
 		for (UINT b = 0; b < model->BoneCount(); b++)
 		{
-			//MeshBone을 얻어와서 역행렬을 건다
+			//MeshBone을 얻어온다
 			ModelBone* bone = model->BoneByIndex(b);
-
-			//ParentBone을 가져온다
-			Matrix parent;
-			int parentIndex = bone->ParentIndex();
-			if (parentIndex < 0)
-				D3DXMatrixIdentity(&parent);
-			else
-				parent = bones[parentIndex];
-
-			//Todo.
-			Matrix animation;
-
-			ModelKeyFrame* frame = clip->Keyframe(bone->Name());
-
-			if (frame != nullptr)
-			{
-				ModelKeyFrameData& data = frame->Transforms[f];
-
-				Matrix S, R, T;
-				D3DXMatrixScaling(&S, data.Scale.x, data.Scale.y, data.Scale.z);
-				D3DXMatrixRotationQuaternion(&R, &data.Rotation);
-				D3DXMatrixTranslation(&T, data.Translation.x, data.Translation.y, data.Translation.z);
-
-				animation = S * R * T;
-			}
-			else
-			{
-				D3DXMatrixIdentity(&animation);
-			}
-
-			bones[b] = animation * parent;
-			clipTransform[index].Trasnform[f][b] = inv * bones[b];
-			//-> (inv * animation) * parent;
+			boneTransforms[i][b] = bone->Transform();
 		}
 	}
+
+	D3D11_SUBRESOURCE_DATA subRousrce;
+	subRousrce.pSysMem = boneTransforms;
+	subRousrce.SysMemPitch = sizeof(Matrix) * MAX_MODEL_TRANSFORMS;
+	subRousrce.SysMemSlicePitch = sizeof(Matrix) * MAX_MODEL_TRANSFORMS * MAX_MODEL_INSTANCE;
+
+	Check(D3D::GetDevice()->CreateTexture2D(&desc, &subRousrce, &texture));
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+	ZeroMemory(&srvDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+	srvDesc.Format = desc.Format;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MipLevels = 1;
+
+	Check(D3D::GetDevice()->CreateShaderResourceView(texture, &srvDesc, &transformsSRV));
 }
 
 Transform* ModelRender::AddTransform()
 {
-	return nullptr;
+	Transform* transform = new Transform();
+	transforms.push_back(transform);
+
+	colors[transforms.size() - 1] = Color(0, 0, 0, 1);
+
+	return transform;
 }
 
 void ModelRender::UpdateTransforms()
 {
-	for (UINT i = 0; i < model->BoneCount(); i++)
-	{
-		ModelBone* bone = model->BoneByIndex(i);
-		transforms[i] = bone->Transform();
-	}
+	for (UINT i = 0; i < transforms.size(); i++)
+		worlds[i] = transforms[i]->World();
 
-	for (ModelMesh* mesh : model->Meshes())
-		mesh->Transforms(transforms);
+	D3D11_MAPPED_SUBRESOURCE subResource;
+	D3D::GetDC()->Map(instanceWorldBuffer->Buffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+	{
+		memcpy(subResource.pData, worlds, sizeof(Matrix) * MAX_MODEL_INSTANCE);
+	}
+	D3D::GetDC()->Unmap(instanceWorldBuffer->Buffer(), 0);
+
+	D3D::GetDC()->Map(instanceColorBuffer->Buffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+	{
+		memcpy(subResource.pData, colors, sizeof(Color) * MAX_MODEL_INSTANCE);
+	}
+	D3D::GetDC()->Unmap(instanceColorBuffer->Buffer(), 0);
 }
 
 void ModelRender::SetColor(UINT instance, Color& color)
 {
+	colors[instance] = color;
 }

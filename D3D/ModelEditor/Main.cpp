@@ -12,6 +12,7 @@ void Main::Initialize()
 {
 	//Push(new ExportFile());
 	Push(new MeshDemo());
+	Push(new ModelDemo());
 }
 
 

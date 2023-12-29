@@ -25,7 +25,31 @@ void ModelDemo::Destroy()
 
 void ModelDemo::Update()
 {
+	//Directional Light
+	static Vector3 LightDirection = Vector3(-1, -1, -1);
+	ImGui::SliderFloat3("LightDirection", LightDirection, -1, 1);
+	shader->AsVector("LightDirection")->SetFloatVector(LightDirection);
 	
+	//Instance Test
+	static UINT index = 0;
+	ImGui::SliderInt("InstanceIndex", (int*)&index, 0, airplane->TransformsCount() - 1);
+	Transform* transform =  airplane->GetTransform(index);
+	
+	Vector3 R;
+	transform->RotationDegree(&R);
+	ImGui::SliderFloat3("Rotatio", R, -180, +180);
+	transform->RotationDegree(R);
+
+	airplane->SetColor(1, Color(1, 0, 0, 1));
+	airplane->SetColor(3, Color(0, 0, 1, 1));
+	airplane->UpdateTransforms();
+	
+	for (UINT i = 0 ; i < tower->TransformsCount(); i++)
+		tower->SetColor(i, Color(0, 0, 0, 1));
+
+	tower->SetColor(index, Color(0, 1, 0, 1));
+	tower->UpdateTransforms();
+
 	if (tank != nullptr)
 	{
 		//tank->Pass(pass);
@@ -72,6 +96,15 @@ void ModelDemo::Tank()
 	tank = new ModelRender(shader);
 	tank->ReadMesh(L"Tank/Tank");
 	tank->ReadMaterial(L"Tank/Tank");
+
+	for (float x = -50; x < 50; x += 2.5f)
+	{
+		Transform* transform =  tank->AddTransform();
+		transform->Position(Vector3(x, 0.f, 5.f));
+		transform->RotationDegree(0, Math::Random(-180, 180), 0);
+		transform->Scale(0.1f, 0.1f, 0.1f);
+	}
+	tank->UpdateTransforms();
 }
 
 
@@ -80,8 +113,15 @@ void ModelDemo::Tower()
 	tower = new ModelRender(shader);
 	tower->ReadMesh(L"Tower/Tower");
 	tower->ReadMaterial(L"Tower/Tower");
-	tower->GetTransform()->Position(-5, 0, 0);
-	tower->GetTransform()->Scale(0.01f, 0.01f, 0.01f);
+
+	for (float x = -50; x < 50; x += 2.5f)
+	{
+		Transform* transform = tower->AddTransform();
+		transform->Position(Vector3(x, 0.f, 7.5f));
+		transform->RotationDegree(0, Math::Random(-180, 180), 0);
+		transform->Scale(0.003f, 0.003f, 0.003f);
+	}
+	tower->UpdateTransforms();
 }
 
 void ModelDemo::Airplane()
@@ -89,6 +129,14 @@ void ModelDemo::Airplane()
 	airplane = new ModelRender(shader);
 	airplane->ReadMesh(L"B787/Airplane");
 	airplane->ReadMaterial(L"B787/Airplane");
-	airplane->GetTransform()->Position(-10, 0, 0);
-	airplane->GetTransform()->Scale(0.001f, 0.001f, 0.001f);
+	
+	for (float x = -50; x < 50; x += 2.5f)
+	{
+		Transform* transform = airplane->AddTransform();
+		transform->Position(Vector3(x, 0.f, 2.5f));
+		transform->RotationDegree(0, Math::Random(-180, 180), 0);
+		transform->Scale(0.00025f, 0.00025f, 0.00025f);
+	}
+	airplane->UpdateTransforms();
+
 }

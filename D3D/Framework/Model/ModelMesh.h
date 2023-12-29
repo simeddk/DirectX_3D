@@ -70,6 +70,7 @@ public:
 
 	//렌더링 자원들을 쉐이더로 전송
 	void Render();
+	void Render(UINT drawCount);
 
 	int BoneIndex() { return boneIndex; }
 	ModelBone* Bone() { return bone; }
@@ -126,7 +127,9 @@ private:
 	~ModelMeshPart();
 
 	void Update();
+
 	void Render();
+	void Render(UINT drawCount);
 
 	//DiffuseMap, NormalMap 텍스쳐 쉐이더와 연결
 	void Binding(Model* model);

@@ -57,6 +57,8 @@ struct VertexModel
 	
 	matrix Transform : Inst1_Transform;
 	float4 Color : Inst2_Color;
+	
+	uint InsstanceID : SV_InstanceID;
 };
 
 #define MAX_MODEL_TRANSFORMS 250
@@ -67,11 +69,22 @@ cbuffer CB_Bones
 	uint BoneIndex; //현재 내가 붙어야할 BoneIndex
 };
 
+void SetModelWorld(inout matrix world, VertexModel input)
+{
+	float4 m0 = TransformsMap.Load(int4(BoneIndex * 4 + 0, input.InsstanceID, 0, 0));
+	float4 m1 = TransformsMap.Load(int4(BoneIndex * 4 + 1, input.InsstanceID, 0, 0));
+	float4 m2 = TransformsMap.Load(int4(BoneIndex * 4 + 2, input.InsstanceID, 0, 0));
+	float4 m3 = TransformsMap.Load(int4(BoneIndex * 4 + 3, input.InsstanceID, 0, 0));
+	
+	matrix transform = matrix(m0, m1, m2, m3);
+	world = mul(transform, input.Transform);
+}
+
 MeshOutput VS_Model(VertexModel input)
 {
 	MeshOutput output;
 	
-	World = mul(BoneTransforms[BoneIndex], World);
+	SetModelWorld(World, input);
 	VS_GENERATE
 	
 	return output;

@@ -11,7 +11,7 @@ float4 PS(MeshOutput input) : SV_Target
 	float4 baseColor = DiffuseMap.Sample(LinearSampler, input.Uv);
 	float lambert = saturate(dot(normal, -LightDirection));
 
-	return baseColor * lambert;
+	return baseColor * lambert + input.Color;
 }
 
 
